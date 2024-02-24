@@ -1,0 +1,25 @@
+# 数据说明及描述性统计 {#method}
+
+## Introduction
+
+In early research exploring the factors affecting the employee's knowledge sharing, researchers mainly analyzed from the technical and economic perspectives. However, as understanding the impact of knowledge sharing deepened, researchers generally recognized some limitations of the economic and technical perspectives in studying corporate knowledge management and knowledge sharing practices. For example, in response to the technology perspective, Eriksson [@Eriksson2013] argues that information technology plays an essential role in employee knowledge sharing and creating new knowledge but does not significantly improve employee knowledge sharing behavior. 
+
+
+## Research Design
+
+## Hypothesis 
+
+## Population and Sample Size
+
+## Sampling 
+
+## Data Collection 
+
+## Data Analysis 
+
+## Reliability and Validity Analysis of the Scale
+
+
+
+
+\newpage

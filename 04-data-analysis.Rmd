@@ -1,0 +1,194 @@
+# Results of the Study {#analysis}
+
+
+## Introduction
+
+导言部分
+
+
+
+## 描述性统计
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+df <- read_rds("./data/df.rds")
+```
+
+
+### 人口特质
+统计性别、年龄、教育程度、工作经历等变量中不同类别所占比例，请见表\@ref(tab:tab01)
+
+```{r, tab.id = "tab01"}
+library(gtsummary)
+df %>% 
+  select(2:6) %>% 
+  gtsummary::tbl_summary() %>% 
+  gtsummary::as_flex_table() %>% 
+  flextable::set_caption("人口信息表")
+```
+
+
+### 描述性统计
+
+检查每个变量中的类别数、缺失值、均值以及中位数等等，描述性统计见表请看表 \@ref(tab:tabdesc)
+
+```{r, tab.id = "tabdesc"}
+df %>% 
+  select(-c(1:6)) %>% 
+  psych::describe() %>% 
+  as.data.frame() %>% 
+  rownames_to_column(var = "variable") %>% 
+  select(variable, mean, sd, skew, kurtosis) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_double(digits = 3) %>% 
+  flextable::line_spacing(space = 0.8) %>% 
+  flextable::autofit() %>% 
+  flextable::line_spacing(space = 0.8) %>% 
+  flextable::set_caption("描述性统计")
+```
+
+
+### 维度
+
+数据的维度如下表 \@ref(tab:tabvariable)
+
+```{r, tab.id = "tabvariable"}
+items <- tibble::tribble(
+  ~问卷题项,  ~维度,            ~变量名,
+  "列 7-10",  "成就",  "`achievement_`",
+  "列11-13",  "合作", "`collectivity_`",
+  "列14-18",  "社交",       "`social_`",
+  "列19-21",  "兴趣",     "`interest_`",
+  "列22-24",  "规则",         "`rule_`",
+  "列25-37", "创造力",   "`creativity_`"
+  )
+
+items %>% 
+  flextable::flextable() %>% 
+  flextable::autofit() %>% 
+  flextable::set_caption("问卷题项及其维度")
+```
+
+根据问卷结果，统计每个被访者在每个主题的平均得分。从技术上讲就是，**行方向**求指定列的均值
+
+```{r}
+d <- df %>% 
+  rowwise() %>% 
+  transmute(
+    gender          = gender,
+    work_experience = work_experience,
+    achievement     = mean(c_across(starts_with("achievement_"))),  # 7列变成了1列
+    collectivity    = mean(c_across(starts_with("collectivity_"))),
+    social          = mean(c_across(starts_with("social_"))),
+    interest        = mean(c_across(starts_with("interest_"))),
+    rule            = mean(c_across(starts_with("rule_"))),
+    creativity      = mean(c_across(starts_with("creativity_")))
+  ) %>% 
+  ungroup()
+```
+
+
+### 相关性分析
+
+变量的相关系数表见表 \@ref(tab:tabcorr) 
+
+```{r, tab.id = "tabcorr"}
+d %>% 
+  select(-gender, -work_experience) %>% 
+  
+  corrr::correlate(diagonal = 1) %>% 
+  corrr::shave() %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_double(digits = 3) %>% 
+  flextable::autofit() %>% 
+  flextable::set_caption("相关系数表")
+```
+
+
+
+
+
+
+
+## 推断性统计
+
+### 单因素T检验
+
+检验不同性别的得分是否存在显著差异，见 \@ref(tab:tabttest)
+
+```{r, tab.id = "tabttest"}
+library(rstatix)
+
+d %>% 
+  rstatix::t_test(creativity ~ gender) %>% 
+  flextable::flextable() %>% 
+  flextable::autofit() %>% 
+  flextable::set_caption("t test")
+```
+
+
+
+### 方差分析
+
+检验不同年龄组之间的得分是否存在显著差异，见图 \@ref(fig:figanova)
+
+
+```{r figanova, fig.cap = "不同工作经历对创造力的影响"}
+library(ggstatsplot)
+
+d %>% 
+  ggstatsplot::ggbetweenstats(
+    x = work_experience,
+    y = creativity
+  )
+```
+
+
+
+## 回归分析
+
+### 回归模型
+
+### 模型比较
+```{r}
+library(modelsummary)
+
+mod1 <- lm(creativity ~ achievement,                                           data = d)
+mod2 <- lm(creativity ~ achievement + collectivity,                            data = d)
+mod3 <- lm(creativity ~ achievement + collectivity + social,                   data = d)
+mod4 <- lm(creativity ~ achievement + collectivity + social + interest,        data = d)
+mod5 <- lm(creativity ~ achievement + collectivity + social + interest + rule, data = d)
+
+lst(mod1, mod2, mod3, mod4, mod5) %>% 
+  modelsummary::modelsummary()
+```
+
+
+由此可以得出模型5是最优的，很好的解释了创造力
+
+```{r}
+library(equatiomatic)
+equatiomatic::extract_eq(model = mod5, wrap = TRUE, show_distribution = TRUE)
+```
+
+### 边际效应
+
+边际效应看图 \@ref(fig:figmarginal)
+
+```{r figmarginal, fig.cap= "marginal effect for preditor."}
+library(marginaleffects)
+library(patchwork)
+
+p1 <- mod5 %>% marginaleffects::plot_predictions(condition = "achievement")
+p2 <- mod5 %>% marginaleffects::plot_predictions(condition = "collectivity")
+p3 <- mod5 %>% marginaleffects::plot_predictions(condition = "social")
+p4 <- mod5 %>% marginaleffects::plot_predictions(condition = "interest")
+p5 <- mod5 %>% marginaleffects::plot_predictions(condition = "rule")
+
+p1 + p2 + p3 + p4 + p5 + plot_layout(nrow = 2)
+```
+
+
+
+\newpage
