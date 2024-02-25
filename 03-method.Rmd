@@ -17,8 +17,15 @@ In early research exploring the factors affecting the employee's knowledge shari
 
 ## Data Analysis 
 
-## Reliability and Validity Analysis of the Scale
 
+Also see Equation \@ref(eq:mean).
+
+\begin{equation}
+\bar{X} = \frac{\sum_{i=1}^n X_i}{n} (\#eq:mean)
+\end{equation}
+
+
+## Reliability and Validity Analysis of the Scale
 
 
 
