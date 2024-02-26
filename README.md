@@ -1,6 +1,6 @@
 # NCU-Thesis-Template
 
-This is the thesis template for Innovation College of North-Chiang Mai University. Please note that this is a test version, not an official release.
+This is the thesis template for Innovation College of North-Chiang Mai University. **Please note that this is a test version, not an official release.**
 
 # How to use
 
