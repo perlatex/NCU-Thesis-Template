@@ -133,7 +133,6 @@ d %>%
 
 检验不同年龄组之间的得分是否存在显著差异，见图 \@ref(fig:figanova)
 
-
 ```{r figanova, fig.cap = "不同工作经历对创造力的影响"}
 library(ggstatsplot)
 
@@ -174,8 +173,8 @@ mlist %>%
     coef_omit  = "(Intercept)",
     title      = "Multiple regression model comparsion",
     output     = "flextable",
-    gof_map    = c("r.squared", "adj.r.squared", "F")
-) %>% 
+    gof_map    = c("r.squared", "adj.r.squared", "F", "aic")
+   ) %>% 
   ftExtra::span_header(sep = "/") %>%  
   flextable::align(i = 1, align = 'center', part = "header") %>% 
   flextable::empty_blanks() %>% 
@@ -202,6 +201,8 @@ equatiomatic::extract_eq(model = mod5, wrap = TRUE)
 \end{equation}
 
 <!-- (我这里是先用equatiomatic生成公式，然后改造成offcedown识别的格式) -->
+
+
 
 ### 边际效应
 
