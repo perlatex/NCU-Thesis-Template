@@ -66,6 +66,23 @@ library(officer)
 officer::block_toc() 
 ```
 
+
+\newpage
+# 表格目录 {-}
+
+```{r tableoftable, echo=FALSE, message=FALSE, warning=FALSE}
+officer::block_toc(style = "Table Caption", separator = ",")  
+```
+
+
+\newpage
+# 图片目录 {-}
+
+```{r tableoffigures, echo=FALSE, message=FALSE, warning=FALSE}
+officer::block_toc(style = "Image Caption", separator = ",") 
+```
+
+
 \newpage
 
 
