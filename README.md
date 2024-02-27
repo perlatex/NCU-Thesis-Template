@@ -14,9 +14,10 @@ pkgs <-
     "officedown", "flextable", "marginaleffects", "showtext", "colorspace",
     "cowplot", "patchwork", "MetBrewer", "styler", "ggthemes", "bookdown", 
     "lavaan", "lavaanExtra", "semPlot", "semTable", "semTools", "sjPlot", 
-    "performance", "ggcorrplot", "ragg", "interactions", "openxlsx",
-    "corrr"
+    "performance", "ggcorrplot", "ragg", "interactions", "corrr"
     )
 
 install.packages(pkgs, dependencies = TRUE)
 ```
+
+
