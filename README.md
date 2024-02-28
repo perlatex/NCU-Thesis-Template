@@ -35,6 +35,6 @@ install.packages(pkgs, dependencies = TRUE)
 - 文档章节
 - 图片及其引用
 - 表格及其引用
-- 插入公式
+- 公式及其引用
 - 参考文献
-- 样式定制/各种辅助文件
+- 样式定制
