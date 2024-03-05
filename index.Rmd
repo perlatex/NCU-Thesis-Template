@@ -63,7 +63,7 @@ library(officer)
 # 目录 {-}
 
 ```{r tableofcontents, echo=FALSE, message=FALSE, warning=FALSE}
-officer::block_toc() 
+officer::block_toc(level = 2) 
 ```
 
 
