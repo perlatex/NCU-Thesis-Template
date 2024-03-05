@@ -22,7 +22,7 @@ install.packages(pkgs, dependencies = TRUE)
 
 ## 运行
 
-- 下载并解压
+- 点击绿色的 "Code" 按钮，然后单击 "Download ZIP" 下载，最后，解压缩文件
 - 点击`NCU-Thesis-Template.Rproj`进入Rstudio界面
 - 点击右下角`index.Rmd`，查看文档基本信息
 - 点击右上角`Build`，下一行出现锤子的图标(Build Book)后，点击锤子
